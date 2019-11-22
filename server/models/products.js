@@ -1,4 +1,4 @@
-const db = require('../../db/mongo');
+const db = require('../../db');
 
 exports.dropRelatedProductsSdcTable = () => {
   return db.RelatedProductsSdc.remove({});
