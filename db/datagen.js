@@ -2,8 +2,8 @@ const faker = require('faker');
 const fs = require('fs');
 const Stream = require('stream');
 
-const readableStream = new Stream.Readable();
-const writableStream = fs.createWriteStream(__dirname + '/data.txt');
+const rs = new Stream.Readable();
+const ws = fs.createWriteStream(__dirname + '/data.txt');
 
 const generateProducts = (numberOfProducts) => {
   let products = [];
@@ -21,14 +21,22 @@ const generateProducts = (numberOfProducts) => {
  return products;
 }
 
-const writeProducts = (numberOfCycles, numberOfProducts) => {
-  readableStream.pipe(writableStream);
-  console.log('starting to write data');
-  for (let i = 0; i < numberOfCycles; i++) {
-    readableStream.push(JSON.stringify(generateProducts(numberOfProducts)));
+rs.numRecords = 0;
+
+rs._read = () => {
+  if (rs.numRecords < 10000000) {
+    rs.push(JSON.stringify(generateProducts(1000)));
+    rs.numRecords = rs.numRecords + 1000;
+  } else {
+    rs.push(null)
   }
-  readableStream.push(null);
-  console.log('done pushing data to the file');
 }
 
-exports.writeProducts = writeProducts;
+rs.pipe(ws);
+
+exports.rs = rs;
+exports.ws = ws;
+
+
+
+
