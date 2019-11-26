@@ -1,14 +1,24 @@
 const faker = require('faker');
 const fs = require('fs');
 const Stream = require('stream');
+const stringify = require('csv-stringify')
 
-const rs = new Stream.Readable();
+const rs = new Stream.Readable({objectMode: true});
 const ws = fs.createWriteStream(__dirname + '/data.txt');
 
-const generateProducts = (numberOfProducts) => {
-  let products = [];
+const stringifier = stringify({
+  header: true,
+  columns: {
+    image: 'image',
+    productTitle: 'producttitle',
+    shippingCost: 'shippingcost',
+    price: 'price',
+    productId: 'productid'
+  }
+})
+
+const generateProducts = () => {
   const urlPrefix = 'https://sdc-otto.s3.amazonaws.com/image';
-  for (let i = 0; i < numberOfProducts; i++) {
     let product = {
       image: `${urlPrefix}${Math.floor((Math.random() * 100))}.jpg`,
       productTitle: faker.commerce.productName(),
@@ -16,26 +26,28 @@ const generateProducts = (numberOfProducts) => {
       price: faker.random.number({min: 10, max: 150}),
       productId: faker.random.uuid(),
     }
-    products.push(product);
- }
- return products;
+  return product;
 }
 
 rs.numRecords = 0;
 
 rs._read = () => {
   if (rs.numRecords < 10000000) {
-    rs.push(JSON.stringify(generateProducts(1000)));
-    rs.numRecords = rs.numRecords + 1000;
+    rs.push(generateProducts());
+    rs.numRecords = rs.numRecords + 1;
   } else {
     rs.push(null)
   }
 }
 
-rs.pipe(ws);
+// ws.on('finish', () => {
+//   console.log('finished writing');
+// });
 
+// rs.pipe(stringifier).pipe(ws);
 exports.rs = rs;
 exports.ws = ws;
+exports.stringifier = stringifier;
 
 
 

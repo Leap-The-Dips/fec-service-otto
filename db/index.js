@@ -19,27 +19,28 @@ mongoose.connect('mongodb://localhost:27017/relatedproductssdc', {
 
 db.once('open', () => { console.log('Connected to Mongo'); });
 
+
 const relatedProductsSdcSchema = new mongoose.Schema({
   image: String,
-  productTitle: String,
-  shippingCost: Number,
+  producttitle: String,
+  shippingcost: Number,
   price: Number,
-  productId: String
+  productid: String
 });
 
+const RelatedProductsSdc = mongoose.model('relatedproductssdc', relatedProductsSdcSchema);
+
 knex.schema.createTableIfNotExists('relatedproducts', (table) => {
-    table.increments('id').primary()
+    // table.increments('id').primary()
     table.string('image')
-    table.string('productTitle')
-    table.float('shippingCost')
+    table.string('producttitle')
+    table.float('shippingcost')
     table.float('price')
-    table.string('productId')
+    table.string('productid')
 })
   .then(() => {
     console.log('Connected to Pg')
   })
-
-const RelatedProductsSdc = mongoose.model('relatedproductssdc', relatedProductsSdcSchema);
 
 exports.RelatedProductsMongo = RelatedProductsSdc;
 exports.RelatedProductsPg = knex;
