@@ -1,4 +1,5 @@
-const datagen = require('./datagen');
+const fs = require('fs');
+const fsPromises = fs.promises;
 const knex = require('knex')({
   client: 'pg',
   connection: {
@@ -18,32 +19,39 @@ const createTable = knex.schema.createTableIfNotExists('relatedproducts', (table
   table.float('price')
   table.string('productid')
 });
-
 const query = "copy relatedproducts(image,producttitle,shippingcost,price,productid) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' delimiter ',' csv header";
+const copyCsvToTable = knex.raw(query);
 
-const copyCsv = knex.raw(query);
+fsPromises.access('./data.txt')
+  .then(() => {
+    console.log('found data.txt file in folder');
+    return dropTable;
+  })
+  .then(() => {
+    console.log('dropped relatedproducts table');
+    return createTable;
+  })
+  .then(() => {
+    console.log('created table');
+    return copyCsvToTable;
+  })
+  .then ((result) => {
+    console.log('number of records copied to the table: ', result.rowCount);
+    console.log(`data loading process took: ${process.uptime()} seconds`)
+  })
+  .catch((err) => {
+    console.log('error: ', err);
+  })
+  .finally(() => {
+    process.exit();
+  });
 
+// json file processing
+// const dropTable = knex.schema.dropTable('relatedproducts');
+// const createTable = knex.schema.createTableIfNotExists('relatedproducts', (table) => {
+//   table.jsonb('data')
+// })
 
-datagen.rs.pipe(datagen.stringifier).pipe(datagen.ws);
+// const query = "copy relatedproducts(data) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' csv quote e'\x01' delimiter e'\x02'";
 
-datagen.ws.on('finish', () => {
-  console.log('csv file created');
-  dropTable
-    .then(() => {
-      console.log('relatedproducts table dropped');
-      return createTable;
-    })
-    .then(()=> {
-      console.log('relatedproducts table created');
-      return copyCsv;
-    })
-    .then((result) => {
-      console.log('data copy successful, rows added: ', result.rowCount);
-    })
-    .catch((err) => {
-      console.log(err);
-    })
-    .finally(() => {
-      process.exit();
-    })
-});
+// datagen.rs.pipe(JSONStream.stringify(open='', sep='\n', close='')).pipe(datagen.ws);

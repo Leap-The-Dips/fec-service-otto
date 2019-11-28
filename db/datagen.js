@@ -1,7 +1,8 @@
 const faker = require('faker');
 const fs = require('fs');
+const fsPromises = fs.promises;
 const Stream = require('stream');
-const stringify = require('csv-stringify')
+const stringify = require('csv-stringify');
 
 const rs = new Stream.Readable({objectMode: true});
 const ws = fs.createWriteStream(__dirname + '/data.txt');
@@ -40,15 +41,14 @@ rs._read = () => {
   }
 }
 
-// ws.on('finish', () => {
-//   console.log('finished writing');
-// });
+ws.on('pipe', () => {
+  console.log('started writing records to file');
+})
 
-// rs.pipe(stringifier).pipe(ws);
-exports.rs = rs;
-exports.ws = ws;
-exports.stringifier = stringifier;
+ws.on('finish', () => {
+  console.log('finished writing records to file');
+  console.log(`data generation process took: ${process.uptime()} seconds`)
+});
 
-
-
+rs.pipe(stringifier).pipe(ws);
 
