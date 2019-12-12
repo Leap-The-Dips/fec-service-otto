@@ -12,14 +12,13 @@ const knex = require('knex')({
 
 const dropTable = knex.schema.dropTable('relatedproducts');
 const createTable = knex.schema.createTableIfNotExists('relatedproducts', (table) => {
-  // table.increments('id').primary()
+  table.uuid('productid').primary().unique()
   table.string('image')
   table.string('producttitle')
   table.float('shippingcost')
   table.float('price')
-  table.string('productid')
 });
-const query = "copy relatedproducts(image,producttitle,shippingcost,price,productid) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' delimiter ',' csv header";
+const query = "copy relatedproducts(productid,image,producttitle,shippingcost,price) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' delimiter ',' csv header";
 const copyCsvToTable = knex.raw(query);
 
 fsPromises.access('./data.txt')
@@ -45,13 +44,3 @@ fsPromises.access('./data.txt')
   .finally(() => {
     process.exit();
   });
-
-// json file processing
-// const dropTable = knex.schema.dropTable('relatedproducts');
-// const createTable = knex.schema.createTableIfNotExists('relatedproducts', (table) => {
-//   table.jsonb('data')
-// })
-
-// const query = "copy relatedproducts(data) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' csv quote e'\x01' delimiter e'\x02'";
-
-// datagen.rs.pipe(JSONStream.stringify(open='', sep='\n', close='')).pipe(datagen.ws);
