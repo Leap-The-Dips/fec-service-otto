@@ -35,7 +35,7 @@ exports.getProduct = (req, res) => {
 
 exports.insertProduct = (req, res) => {
   const product = req.body;
-  products.insertManyProducts(product)
+  products.insertProduct(product)
     .then((results) => {
       res.status(201).send(results);
     })
