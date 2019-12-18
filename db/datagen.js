@@ -14,10 +14,11 @@ const stringifier = stringify({
     producttitle: 'producttitle',
     shippingcost: 'shippingcost',
     price: 'price',
+    recordnumber: 'recordnumber'
   }
 });
 
-const generateProducts = () => {
+const generateProducts = (recordNumber) => {
   const urlPrefix = 'https://sdc-otto.s3.amazonaws.com/image';
     let product = {
       productid: faker.random.uuid(),
@@ -25,6 +26,7 @@ const generateProducts = () => {
       producttitle: faker.commerce.productName(),
       shippingcost: faker.random.number({max: 8, min: 1}),
       price: faker.random.number({min: 10, max: 150}),
+      recordnumber: recordNumber
     }
   return product;
 };
@@ -33,7 +35,7 @@ rs.numRecords = 0;
 
 rs._read = () => {
   if (rs.numRecords < 10000000) {
-    rs.push(generateProducts());
+    rs.push(generateProducts(rs.numRecords));
     rs.numRecords = rs.numRecords + 1;
   } else {
     rs.push(null)

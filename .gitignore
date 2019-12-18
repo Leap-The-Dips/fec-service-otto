@@ -4,3 +4,5 @@ client/dist/bundle.js
 db/data.txt
 .DS_Store
 db/.DS_Store
+__tests__/client.test.js-old
+__tests__/server.test.js-old

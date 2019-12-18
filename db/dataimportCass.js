@@ -30,14 +30,15 @@ fsPromises.access('./data.txt')
   })
   .then(function () {
     const query = "CREATE TABLE IF NOT EXISTS sdc.relatedproducts" +
-    " (productid uuid PRIMARY KEY, image text, producttitle text, shippingcost text, price text)";
+    " (productid uuid, image text, producttitle text, shippingcost text, price text, recordnumber int," +
+    "primary key (productid, recordnumber))";
     return client.execute(query);
   })
   .then(function () {
     return client.metadata.getTable('sdc', 'relatedproducts');
   })
   .then(() => {
-      const query = 'INSERT INTO sdc.relatedproducts (productid, image, producttitle, shippingcost, price) values (?, ?, ?, ?, ?)';
+      const query = 'INSERT INTO sdc.relatedproducts (productid, image, producttitle, shippingcost, price, recordnumber) values (?, ?, ?, ?, ?, ?)';
       return executeConcurrent(client, query, stream, {prepare: true, concurrencyLevel: 500});
   })
   .then((result) => {
