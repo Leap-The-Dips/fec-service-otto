@@ -17,8 +17,9 @@ const createTable = knex.schema.createTableIfNotExists('relatedproducts', (table
   table.string('producttitle')
   table.float('shippingcost')
   table.float('price')
+  table.float('recordnumber')
 });
-const query = "copy relatedproducts(productid,image,producttitle,shippingcost,price) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' delimiter ',' csv header";
+const query = "copy relatedproducts(productid,image,producttitle,shippingcost,price, recordnumber) from '/Users/osanchez/coding bc/rpt16/sdc-service-otto/db/data.txt' delimiter ',' csv header";
 const copyCsvToTable = knex.raw(query);
 
 fsPromises.access('./data.txt')
