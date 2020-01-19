@@ -4,9 +4,12 @@
 const knex = require('knex')({
   client: 'pg',
   connection: {
-    host: '127.0.0.1',
-    user: 'osanchez',
-    password: '',
+    // host: '127.0.0.1',
+    // user: 'osanchez',
+    // password: '',
+    host: '10.0.1.100',
+    user: 'postgres',
+    password: '!Postgresql0603',
     database: 'sdc'
   }
 });
@@ -16,6 +19,7 @@ const knex = require('knex')({
 //   useUnifiedTopology: true,
 //   useCreateIndex: true
 // });
+
 
 // db.once('open', () => { console.log('Connected to Mongo'); });
 
@@ -37,7 +41,7 @@ knex
     recordnumber: 1
   })
     .then(() => {
-      console.log('Successfully connected to PG')
+      console.log('Successfully connected to PG 10.0.1.100')
     })
     .catch((error) => {
       console.log('Error in connecting to PG', error)

@@ -5,7 +5,7 @@ const app = express();
 const routes = require('./routes/routes');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-// const morgan = require('morgan');
+const morgan = require('morgan');
 const port = 3001;
 
 
@@ -13,7 +13,7 @@ const port = 3001;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(morgan('dev'));
+app.use(morgan('dev'));
 app.use(express.static('./client/dist'));
 app.use('/', routes);
 
