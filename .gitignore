@@ -6,3 +6,5 @@ db/data.txt
 db/.DS_Store
 __tests__/client.test.js-old
 __tests__/server.test.js-old
+db/sdc.pem
+db/sdcoh.pem

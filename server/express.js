@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require('express');
 const app = express();
 // const compression = require('compression');
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan('dev'));
-app.use(express.static('public'));
+app.use(express.static('./client/dist'));
 app.use('/', routes);
 
 app.listen(port, () => console.log(`SDC Service running on port ${port}`));

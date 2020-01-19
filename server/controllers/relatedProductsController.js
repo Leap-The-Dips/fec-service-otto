@@ -24,6 +24,7 @@ exports.insertProducts = (req, res) => {
 
 exports.getProduct = (req, res) => {
   const productId = req.query.prod_id;
+  // console.log(productId)
   products.getProduct(productId)
     .then((results) => {
       res.status(200).send(results);
@@ -47,10 +48,10 @@ exports.insertProduct = (req, res) => {
 exports.updateProduct = (req, res) => {
   const productId = req.params.productId;
   const product = req.body;
-  console.log(productId, product);
+  // console.log('product updat', productId, product);
   products.updateProduct(productId, product)
     .then((results) => {
-      res.status(201).send(results);
+      res.sendStatus(201).send(results);
     })
     .catch((err) => {
       res.status(404).send(err);
@@ -59,10 +60,10 @@ exports.updateProduct = (req, res) => {
 
 exports.deleteProduct = (req, res) => {
   const productId = req.params.productId;
-  console.log(productId);
+  // console.log(productId);
   products.deleteProduct(productId)
     .then((results) => {
-      res.status(201).send(results);
+      res.sendStatus(201).send(results);
     })
     .catch((err) => {
       res.status(404).send(err);

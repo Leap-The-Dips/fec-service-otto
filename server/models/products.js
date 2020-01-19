@@ -28,7 +28,7 @@ exports.getProduct = (productId) => {
     .select()
     .from('relatedproducts')
     .where({
-      productId, productId
+      'recordnumber': productId
     });
 };
 
@@ -43,7 +43,7 @@ exports.deleteProduct = (productId) => {
   // return query.exec();
   return db.RelatedProductsPg('relatedproducts')
     .where({
-      productId, productId
+      'recordnumber': productId
     })
     .del()
 };
@@ -53,7 +53,7 @@ exports.updateProduct = (productId, product) => {
   // return query.exec();
   return db.RelatedProductsPg('relatedproducts')
     .where({
-      productId: productId
+      recordnumber: productId
     })
     .update(product)
 };

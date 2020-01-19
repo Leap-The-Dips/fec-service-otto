@@ -6,12 +6,12 @@ services:
     build: ./
     ports:
       - "80:3001"
-    volumes:
-      - .:/alexFEC
-    links:
-      - mongo
-  mongo:
-    container_name: mongo
-    image: mongo
-    ports:
-      - "27017:27017"
+  #   volumes:
+  #     - .:/alexFEC
+  #   links:
+  #     - mongo
+  # mongo:
+  #   container_name: mongo
+  #   image: mongo
+  #   ports:
+  #     - "27017:27017"
