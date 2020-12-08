@@ -51,7 +51,7 @@
     "csv-parser": "^2.3.2",
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "fast-csv": "^3.4.0",
+    "fast-csv": "^4.3.6",
     "jsonstream": "^1.0.3",
     "knex": "^0.20.2",
     "mongodb": "^3.3.2",
